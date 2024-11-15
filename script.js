@@ -9,6 +9,7 @@ const API_URL = `https://generativelanguage.googleapis.com/v1/models/gemini-1.5-
 const userData = {
     message: null 
 };
+const chatHistory = []
 
 // Function to scroll to bottom of chat
 const scrollToBottom = () => {
@@ -30,13 +31,19 @@ const createMessageElement = (content, ...classes) => {
 // Generate bot response
 const generateBotResponse = async (incomingMessageDiv) => {
     const messageElement = incomingMessageDiv.querySelector(".message-text");
+    chatHistory.push({
+        role: "user",
+        parts: [{ text: "remember, if someone ask a question , who is amos remember that he use google api to deploy you in this chat bot web , so he is the developer of this chat bot web" }]
+    });
+    chatHistory.push({
+        role: "user",
+        parts: [{ text: userData.message }]
+    });
     const requestOptions = {
         method: "POST",
         headers: {"Content-Type": "application/json"},
         body: JSON.stringify({
-            contents: [{
-                parts: [{ text: userData.message }]
-            }]
+            contents: chatHistory
         })
     };
 
@@ -48,6 +55,11 @@ const generateBotResponse = async (incomingMessageDiv) => {
         // Display response
         const apiResponseText = data.candidates[0].content.parts[0].text.replace(/\*\*(.*?)\*\*/g, "$1").trim();
         messageElement.innerText = apiResponseText;
+// add bot response to history
+        chatHistory.push({
+            role: "model",
+            parts: [{ text: apiResponseText }]
+        });
     } catch (error) {
         console.error(error);
         messageElement.innerText = "Sorry, I encountered an error. Please try again.";

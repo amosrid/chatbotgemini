@@ -200,6 +200,10 @@ body {
     background-color: transparent;
 }
 
+.chat-form  textarea {
+    overflow: hidden;
+}
+
 .chat-form .chat-controls {
     display: flex;
     align-items: center;
