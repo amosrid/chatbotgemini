@@ -225,5 +225,7 @@ body {
     }
     .chat-footer {
         position: fixed;
+        right: 0;
+        bottom: 0;
     }
 }
