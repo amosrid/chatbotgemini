@@ -218,3 +218,9 @@ body {
     }
     
 }
+@media screen and (max-width: 750px){
+    .chatbot-popup {
+        height: 100vh;
+        border-radius: 0;
+    }
+}
