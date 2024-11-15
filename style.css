@@ -1,11 +1,11 @@
 /* font */
-@import url('https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
 
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: "Inter", sans-serif;
+    font-family: "Plus Jakarta Sans", sans-serif;
 }
 
 body {
@@ -13,50 +13,57 @@ body {
     align-items: center;
     justify-content: center;
     min-height: 100vh;
-    background: linear-gradient(#EEEFFF, #C8C7FF);
+    background: linear-gradient(135deg, #f6f9fc 0%, #edf2f7 100%);
 }
 
 .chatbot-popup {
     width: 420px;
-    height: 600px; /* Added fixed height */
-    background-color: #fff;
+    height: 600px;
+    background-color: #ffffff;
     position: relative;
     overflow: hidden;
-    border-radius: 15px;
-    box-shadow: 0 0 20px rgba(83, 80, 196, 0.15); /* Improved shadow */
+    border-radius: 24px;
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.08);
 }
 
 .chat-header {
     display: flex;
     align-items: center;
-    background-color: #5350C4;
-    padding: 15px 22px;
+    background-color: #2c3e50;
+    padding: 18px 24px;
     justify-content: space-between;
-    position: sticky; /* Added sticky positioning */
+    position: sticky;
     top: 0;
     z-index: 1000;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .chat-header .header-info {
     display: flex;
-    gap: 10px;
+    gap: 12px;
     align-items: center;
 }
 
 .header-info .chatbot-logo {
-    height: 35px;
-    width: 35px;
-    padding: 6px;
-    fill: #5350C4;
+    height: 38px;
+    width: 38px;
+    padding: 8px;
+    fill: #2c3e50;
     flex-shrink: 0;
     background-color: #fff;
-    border-radius: 50%;
+    border-radius: 12px;
+    transition: transform 0.3s ease;
+}
+
+.header-info .chatbot-logo:hover {
+    transform: rotate(-5deg);
 }
 
 .header-info .logo-text {
     color: white;
-    font-size: 1.3rem;
+    font-size: 1.25rem;
     font-weight: 600;
+    letter-spacing: -0.5px;
 }
 
 .chat-header .material-symbols-outlined {
@@ -64,40 +71,60 @@ body {
     color: #fff;
     height: 40px;
     width: 40px;
-    font-size: 1.9rem;
+    font-size: 1.75rem;
     cursor: pointer;
-    border-radius: 50%;
-    transition: 0.2s ease;
-    background-color: transparent; /* Changed from #5350C4 */
+    border-radius: 12px;
+    transition: all 0.2s ease;
+    background-color: rgba(255, 255, 255, 0.1);
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
 .chat-header .material-symbols-outlined:hover {
-    background-color: rgba(255, 255, 255, 0.1); /* Improved hover state */
+    background-color: rgba(255, 255, 255, 0.2);
+    transform: translateY(-1px);
 }
 
 .chat-body {
-    padding: 15px 22px;
-    height: calc(100% - 140px); /* Adjusted height calculation */
+    padding: 20px 24px;
+    height: calc(100% - 140px);
     overflow-y: auto;
     display: flex;
     flex-direction: column;
-    gap: 1.5vh;
+    gap: 16px;
     font-size: 0.95rem;
-    scrollbar-width: thin ;
-    scrollbar-color: #ccccf5 transparent;
-    
+    scrollbar-width: thin;
+    scrollbar-color: #e2e8f0 transparent;
 }
 
+.chat-body::-webkit-scrollbar {
+    width: 6px;
+}
+
+.chat-body::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.chat-body::-webkit-scrollbar-thumb {
+    background-color: #e2e8f0;
+    border-radius: 20px;
+}
+
+/* Previous CSS remains the same until message-text class */
+
 .message-text {
-    border-radius: 10px;
+    border-radius: 16px;
     margin: 1%;
     max-width: 75%;
-    padding: 12px 16px; /* Improved padding */
+    padding: 14px 18px;
     min-height: 35px;
-    word-wrap: break-word;
+    line-height: 1.5;
+    /* Hapus word-wrap dan word-break yang agresif */
+    white-space: pre-wrap;      /* Tetap pertahankan untuk spasi dan line breaks */
+    hyphens: auto;             /* Menambahkan hyphens untuk pemisahan kata yang lebih baik */
+    overflow-wrap: anywhere;    /* Menggunakan 'anywhere' untuk kontrol yang lebih baik */
+    width: fit-content;        /* Memastikan container menyesuaikan dengan konten */
 }
 
 .user-message {
@@ -107,29 +134,35 @@ body {
 }
 
 .user-message .message-text {
-    background-color: #5350C4;
-    color: white; /* Added text color */
+    background-color: #2c3e50;
+    color: white;
+    box-shadow: 0 2px 8px rgba(44, 62, 80, 0.15);
+    min-width: 80px;
 }
+
+/* Rest of the CSS remains the same */
 
 .bot-message {
     display: flex;
-    align-items: flex-start; /* Changed from center */
-    gap: 8px; /* Added gap */
+    align-items: flex-start;
+    gap: 10px;
 }
 
 .bot-message .message-text {
-    background-color: #f5f5f5;
+    background-color: #f8fafc;
+    border: 1px solid #e2e8f0;
+    color: #334155;
 }
 
 .bot-message .chatbot-logo {
-    height: 35px;
-    width: 35px;
-    padding: 6px;
+    height: 38px;
+    width: 38px;
+    padding: 8px;
     fill: #fff;
     flex-shrink: 0;
-    background-color: #5350C4;
-    border-radius: 50%;
-    margin-top: 2px; /* Added margin top */
+    background-color: #2c3e50;
+    border-radius: 12px;
+    margin-top: 2px;
 }
 
 .chat-footer {
@@ -137,64 +170,66 @@ body {
     width: 100%;
     bottom: 0;
     background-color: #fff;
-    padding: 15px 22px;
-    border-top: 1px solid #EAEAEA; /* Added border */
+    padding: 18px 24px;
+    border-top: 1px solid #e2e8f0;
 }
 
 .chat-footer .chat-form {
     display: flex;
     align-items: center;
-    background-color: white;
-    border-radius: 32px;
-    border: 1px solid #CCCCE5;
-    transition: all 0.2s ease; /* Added transition */
+    background-color: #f8fafc;
+    border-radius: 16px;
+    border: 1px solid #e2e8f0;
+    transition: all 0.3s ease;
 }
 
 .chat-footer .chat-form:focus-within {
-    border-color: #5350C4;
-    box-shadow: 0 0 0 2px rgba(83, 80, 196, 0.1); /* Added focus shadow */
+    border-color: #2c3e50;
+    box-shadow: 0 0 0 3px rgba(44, 62, 80, 0.1);
 }
 
 .chat-form .message-input {
     border: none;
     outline: none;
-    height: 47px;
+    height: 50px;
     width: 100%;
     font-size: 0.95rem;
-    padding: 14px 18px;
+    padding: 16px 20px;
     border-radius: inherit;
     resize: none;
+    background-color: transparent;
 }
 
 .chat-form .chat-controls {
     display: flex;
     align-items: center;
-    height: 47px;
-    gap: 8px; /* Increased gap */
-    padding-right: 8px;
+    height: 50px;
+    gap: 10px;
+    padding-right: 12px;
 }
 
 .chat-form .chat-controls button {
-    height: 35px;
-    width: 35px;
+    height: 36px;
+    width: 36px;
     border: none;
     cursor: pointer;
     font-size: 1.15rem;
-    color: #706DB0;
+    color: #64748b;
     background: none;
-    border-radius: 50%;
-    transition: 0.2s ease;
+    border-radius: 10px;
+    transition: all 0.2s ease;
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
 .chat-form .chat-controls button:hover {
-    background: #f1f1f1;
+    background: #e2e8f0;
+    color: #334155;
 }
 
 .chat-form .chat-controls #send-message {
-    background: #5350C4;
+    background: #2c3e50;
     color: white;
     display: none;
 }
@@ -204,25 +239,26 @@ body {
 }
 
 .chat-form .chat-controls #send-message:hover {
-    background: #3d39ac;
+    background: #1a252f;
+    transform: translateY(-1px);
 }
 
 /* Thinking animation */
 .bot-message.thinking .message-text {
-    padding: 8px 16px;
+    padding: 10px 18px;
 }
 
 .bot-message .message-text .thinking-indicator {
     display: flex;
-    gap: 4px;
+    gap: 6px;
     padding-block: 8px;
 }
 
 .bot-message .message-text .thinking-indicator .dot {
-    height: 7px;
-    width: 7px;
+    height: 8px;
+    width: 8px;
     opacity: 0.7;
-    background-color: #6F6BC2;
+    background-color: #2c3e50;
     border-radius: 50%;
     animation: dotPulse 1.8s ease-in-out infinite;
 }
@@ -245,7 +281,7 @@ body {
     }
     28% {
         opacity: 0.4;
-        transform: translateY(-4px);
+        transform: translateY(-5px);
     }
     44% {
         opacity: 0.4;
