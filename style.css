@@ -116,7 +116,7 @@ body {
 .message-text {
     border-radius: 16px;
     margin: 1%;
-    max-width: 75%;
+    max-width: 100%;
     padding: 14px 18px;
     min-height: 35px;
     line-height: 1.5;

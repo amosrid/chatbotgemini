@@ -2,6 +2,22 @@ const chatBody = document.querySelector(".chat-body");
 const messageInput = document.querySelector(".message-input");
 const sendMessageButton = document.getElementById("send-message");
 const greetingMessage = document.getElementById("greeting-message");
+const cleanTextContent = (text) => {
+    return text
+        // Remove asterisk formatting
+        .replace(/```javascript([\s\S]*?)```/g, (_, code) => `
+                <pre class="code-block">
+                    <code class="language-javascript">${code.trim()}</code>
+                </pre>
+            `)
+        .replace(/\*{1,3}([^*]+)\*{1,3}/g, '$1')
+        // Clean up multiple spaces
+        .replace(/\s+/g, ' ')
+        // Clean up newlines that might appear in the text
+        .replace(/\n+/g, ' ')
+        // Trim any extra whitespace
+        .trim();
+};
 
 // API Configuration
 const API_KEY = "AIzaSyAfPg74TMqR71M3s-ylYgaLnoLXp6yLh4s";
@@ -50,8 +66,8 @@ const generateBotResponse = async (incomingMessageDiv) => {
         if (!response.ok) throw new Error(data.error.message);
 
         // Display response
-        const apiResponseText = data.candidates[0].content.parts[0].text.replace(/\\(.?)\\*/g, '<strong>$1</strong>').trim();
-        
+        const apiResponseTextn = data.candidates[0].content.parts[0].text;
+        const apiResponseText = cleanTextContent(apiResponseTextn);
         messageElement.innerText = apiResponseText;
 // add bot response to history
         chatHistory.push({
