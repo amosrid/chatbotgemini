@@ -1,22 +1,58 @@
 const chatBody = document.querySelector(".chat-body");
+const currentlanguange = prompt("what is your current languange u want to learn")
 const messageInput = document.querySelector(".message-input");
 const sendMessageButton = document.getElementById("send-message");
 const greetingMessage = document.getElementById("greeting-message");
 const cleanTextContent = (text) => {
-    return text
-        // Remove asterisk formatting
-        .replace(/```javascript([\s\S]*?)```/g, (_, code) => `
-                <pre class="code-block">
-                    <code class="language-javascript">${code.trim()}</code>
-                </pre>
-            `)
-        .replace(/\*{1,3}([^*]+)\*{1,3}/g, '$1')
-        // Clean up multiple spaces
-        .replace(/\s+/g, ' ')
-        // Clean up newlines that might appear in the text
-        .replace(/\n+/g, ' ')
-        // Trim any extra whitespace
-        .trim();
+    // First, preserve code blocks (```) by temporarily replacing them
+    const codeBlocks = [];
+    let codeBlockCounter = 0;
+    text = text.replace(/```([\s\S]*?)```/g, (match) => {
+        codeBlocks.push(match);
+        return `__CODE_BLOCK_${codeBlockCounter++}__`;
+    });
+
+    // Then handle inline code (single backticks)
+    const inlineCode = [];
+    let inlineCodeCounter = 0;
+    text = text.replace(/`([^`]+)`/g, (match) => {
+        inlineCode.push(match);
+        return `__INLINE_CODE_${inlineCodeCounter++}__`;
+    });
+
+    // Apply other formatting
+    text = text
+        .replace(/\n+/g, "<br>")
+        .replace(/\*\*(.*?)\*\*/g, "<b>$1</b>")
+        .replace(/\*\*\*(.*?)\*\*/g, "<li>$1</li>");
+
+    // Restore code blocks with proper formatting
+    codeBlocks.forEach((block, index) => {
+        const code = block.replace(/```([\s\S]*?)```/g, '$1').trim();
+        text = text.replace(
+            `__CODE_BLOCK_${index}__`,
+            `<div class="code-container">
+                <div class="code-header">
+                    <span class="code-title">Code</span>
+                    <button class="copy-button" onclick="copyCode(this)">Copy</button>
+                </div>
+                <div class="code-content">
+                    <pre><code>${code}</code></pre>
+                </div>
+            </div>`
+        );
+    });
+
+    // Restore inline code with proper formatting
+    inlineCode.forEach((code, index) => {
+        const inlineText = code.replace(/`(.*?)`/g, '$1');
+        text = text.replace(
+            `__INLINE_CODE_${index}__`,
+            `<span class="code-inline">${inlineText}</span>`
+        );
+    });
+
+    return text.trim();
 };
 
 // API Configuration
@@ -68,7 +104,7 @@ const generateBotResponse = async (incomingMessageDiv) => {
         // Display response
         const apiResponseTextn = data.candidates[0].content.parts[0].text;
         const apiResponseText = cleanTextContent(apiResponseTextn);
-        messageElement.innerText = apiResponseText;
+        messageElement.innerHTML = apiResponseText;
 // add bot response to history
         chatHistory.push({
             role: "model",
@@ -87,16 +123,16 @@ if (chatHistory.length === 0) {
     // Add initial context messages to chat history
     chatHistory.push({
         role: "user",
-        parts: [{ text: "remember, if someone ask a question , who is amos remember that he use google api to deploy you in this chat bot web , so he is the developer of this chat bot web , and his github link is `https://github.com/amosrid/` currently he is a undergraduate student at Universitas Kristen Surakarta, if someone ask a question answer with your own languange" }]
+        parts: [{ text: "Remember, if anyone asks 'Who is Amos?', respond by stating that he is the developer of this chatbot web application, utilizing the Google API for deployment. Mention that his GitHub link is https://github.com/amosrid/, and he is currently an undergraduate student at Universitas Kristen Surakarta. When answering, use your own language to craft a clear and contextually appropriate response." }]
     });
     
     chatHistory.push({
         role: "user",
-        parts: [{ text: "from now i want you to be expert in javascript languange , act like u a senior developer with experince more than 10 years, and you want to teach your junior intern developer about the js and the other framework and i want to call u with mr bard" }]
+        parts: [{ text: `You are now a highly skilled and experienced senior developer specializing in ${currentlanguange} and its associated frameworks. Act as a mentor dedicated to educating a junior intern on best practices, advanced concepts, and industry-standard methodologies in ${currentlanguange}. Provide clear, detailed explanations, examples, and hands-on coding guidance to foster their learning. Let me address you as 'Mr. Bard' throughout our conversation.` }]
     });
     chatHistory.push({
         role: "user",
-        parts: [{ text: "now give me a simple greeting from you, and please make sure to make the convo is comfy" }]
+        parts: [{ text: "Start by giving me a warm and friendly greeting. Ensure the tone is relaxed and conversational to make the interaction feel comfortable and inviting." }]
     });
 
     // Generate and display initial greeting
@@ -184,6 +220,20 @@ messageInput.addEventListener("keydown", (e) => {
         }
     }
 });
+const copyCode = (button) => {
+    const codeBlock = button.closest('.code-container').querySelector('code');
+    const textToCopy = codeBlock.textContent;
+    
+    navigator.clipboard.writeText(textToCopy).then(() => {
+        button.textContent = 'Copied!';
+        setTimeout(() => {
+            button.textContent = 'Copy';
+        }, 2000);
+    }).catch(err => {
+        console.error('Failed to copy:', err);
+        button.textContent = 'Failed';
+    });
+};
 
 sendMessageButton.addEventListener("click", handleOutgoingMessage);
 
